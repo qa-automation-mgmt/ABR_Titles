@@ -6,6 +6,7 @@
             <class name="com.seg.titles.base.LoginTest"/>
             <class name="com.seg.titles.base.SortTableTest"/>
             <class name="com.seg.titles.base.ScrollPageTest"/>
+            <class name="com.seg.titles.base.FilterTableTest"/>
         </classes>
     </test>
 </suite>
