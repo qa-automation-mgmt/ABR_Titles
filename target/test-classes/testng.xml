@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SEG Titles Automation Suite">
+    <test name="Full Flow">
+        <classes>
+            <class name="com.seg.titles.base.LoginTest"/>
+            <class name="com.seg.titles.base.SortTableTest"/>
+            <class name="com.seg.titles.base.ScrollPageTest"/>
+        </classes>
+    </test>
+</suite>
