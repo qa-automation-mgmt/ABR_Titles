@@ -1,7 +1,0 @@
-com/seg/titles/pages/HomePage.class
-com/seg/titles/utils/SharedDriver.class
-LoginPageLocators.class
-com/seg/titles/pages/SortTablePage.class
-LoginTest.class
-ExtentManager.class
-com/seg/titles/pages/LoginPage.class
