@@ -5,6 +5,11 @@
         <classes>
             <class name="com.seg.titles.base.LoginTest"/>
             <class name="com.seg.titles.base.ScrollPageTest"/>
+            <class name="com.seg.titles.base.SortTableTest"/>
+            <class name="com.seg.titles.base.FilterTableTest"/>
+            <class name="com.seg.titles.base.AllCheckboxFiltersTest"/>
+            <class name="com.seg.titles.base.MenuClickTest"/>
+            <class name="com.seg.titles.base.TitleDetailsTest"/>
         </classes>
     </test>
 </suite>

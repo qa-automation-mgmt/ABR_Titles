@@ -9,76 +9,63 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
-/**
- * Page Object Model class for the Microsoft Login page
- */
 public class LoginPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
-    // Email input field
     @FindBy(id = "i0116")
     private WebElement usernameField;
 
-    // "Next" button after entering email
     @FindBy(id = "idSIButton9")
     private WebElement nextButton;
 
-    // Password input field
     @FindBy(id = "i0118")
     private WebElement passwordField;
 
-    // "Sign in" button after entering password
     @FindBy(id = "idSIButton9")
     private WebElement signInButton;
 
-    // Constructor
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         PageFactory.initElements(driver, this);
     }
 
-    /** Wait for email field and enter username */
     public void enterUsername(String username) {
         try {
             driver.switchTo().defaultContent();
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("i0116")));
-            wait.until(ExpectedConditions.visibilityOf(usernameField));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("i0116")));
             usernameField.clear();
             usernameField.sendKeys(username);
             System.out.println("✅ Entered username successfully");
         } catch (Exception e) {
-            throw new RuntimeException("❌ Failed to locate or type into username field: " + e.getMessage());
+            throw new RuntimeException("❌ Failed to enter username: " + e.getMessage());
         }
     }
 
-    /** Click on the "Next" button after username */
     public void clickNextButton() {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(nextButton));
             nextButton.click();
-            System.out.println("✅ Clicked on Next button");
+            System.out.println("✅ Clicked Next button");
+            Thread.sleep(2000); // Brief pause for page transition
         } catch (Exception e) {
             throw new RuntimeException("❌ Failed to click Next button: " + e.getMessage());
         }
     }
 
-    /** Wait for password field and enter password */
     public void enterPassword(String password) {
         try {
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("i0118")));
-            wait.until(ExpectedConditions.visibilityOf(passwordField));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("i0118")));
             passwordField.clear();
             passwordField.sendKeys(password);
             System.out.println("✅ Entered password successfully");
         } catch (Exception e) {
-            throw new RuntimeException("❌ Failed to locate or type into password field: " + e.getMessage());
+            throw new RuntimeException("❌ Failed to enter password: " + e.getMessage());
         }
     }
 
-    /** Click the "Sign In" button */
     public void clickSignInButton() {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(signInButton));
@@ -89,7 +76,6 @@ public class LoginPage {
         }
     }
 
-    /** Complete login flow */
     public void login(String username, String password) {
         enterUsername(username);
         clickNextButton();
@@ -97,43 +83,64 @@ public class LoginPage {
         clickSignInButton();
     }
 
-    /** Automatically logs in with stored credentials (for automated tests) */
+    /** Improved login with better error handling and verification */
     public void loginWithCredentials() {
         try {
-            System.out.println("🔹 Starting auto login with stored credentials...");
+            System.out.println("🔹 Starting auto login...");
             String username = "abr.qa@primotech.com";
             String password = "AbRqu@l!ty#rt5$";
 
-            // Perform login
             login(username, password);
 
-            // Wait for redirect and handle MFA or “Stay signed in”
-            for (int i = 0; i < 18; i++) { // ~90 seconds
+            // Wait for successful login - max 2 minutes
+            boolean loginSuccessful = false;
+            int maxAttempts = 24; // 24 * 5 seconds = 120 seconds
+            
+            for (int i = 0; i < maxAttempts; i++) {
                 Thread.sleep(5000);
                 String currentUrl = driver.getCurrentUrl().toLowerCase();
+                String pageSource = driver.getPageSource().toLowerCase();
 
-                if (currentUrl.contains("titles-dev.abramsbooks.com")) {
-                    System.out.println("✅ Login successful — reached Titles Dev homepage!");
-                    return;
+                // Check if we've reached the target site
+                if (currentUrl.contains("titles-dev.abramsbooks.com") && 
+                    !currentUrl.contains("login") && 
+                    !pageSource.contains("sign in")) {
+                    System.out.println("✅ Login successful - reached Titles Dev!");
+                    loginSuccessful = true;
+                    break;
                 }
 
-                if (driver.getPageSource().toLowerCase().contains("stay signed in")) {
+                // Handle "Stay signed in" prompt
+                if (pageSource.contains("stay signed in")) {
                     try {
-                        driver.findElement(By.id("idSIButton9")).click();
-                        System.out.println("✅ Clicked 'Yes' on Stay signed in prompt");
+                        WebElement yesButton = driver.findElement(By.id("idSIButton9"));
+                        if (yesButton.isDisplayed()) {
+                            yesButton.click();
+                            System.out.println("✅ Clicked 'Yes' on Stay signed in");
+                            Thread.sleep(3000);
+                        }
                     } catch (Exception ignored) {}
                 }
 
-                System.out.println("⏳ Waiting for MFA approval or redirect...");
+                System.out.println("⏳ Attempt " + (i + 1) + "/" + maxAttempts + " - Waiting for MFA/redirect...");
             }
 
-            System.out.println("⚠️ Login might have succeeded, but redirect not confirmed.");
+            if (!loginSuccessful) {
+                throw new RuntimeException("❌ Login failed - timed out after 2 minutes. Current URL: " + driver.getCurrentUrl());
+            }
+
+            // Additional verification - wait for page to be stable
+            Thread.sleep(3000);
+            System.out.println("✅ Login verification complete");
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("❌ Login interrupted: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("❌ Auto login failed: " + e.getMessage());
+            throw new RuntimeException("❌ Login failed: " + e.getMessage());
         }
     }
 
-    /** Return page title */
     public String getPageTitle() {
         return driver.getTitle();
     }

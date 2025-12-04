@@ -5,12 +5,12 @@ import org.openqa.selenium.WebDriver;
 public class SharedDriver {
     private static WebDriver driver;
 
-    public static void setDriver(WebDriver sharedDriver) {
-        driver = sharedDriver;
-    }
-
     public static WebDriver getDriver() {
         return driver;
+    }
+
+    public static void setDriver(WebDriver webDriver) {
+        driver = webDriver;
     }
 
     public static void quitDriver() {
