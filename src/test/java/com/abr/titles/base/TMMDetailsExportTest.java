@@ -49,12 +49,11 @@ public class TMMDetailsExportTest extends BaseTest {
     public void teardown() {
         System.out.println("✅ Test completed - keeping driver alive for other tests");
         softAssert.assertAll(); // Assert all soft assertions at the end
-    }
-
+    } 
     // ═══════════════════════════════════════════════════════════════
-    // TC-097: Verify TMM Export Navigation
+    // COMPREHENSIVE FLOW TEST (Original Full Flow)
     // ═══════════════════════════════════════════════════════════════
-    @Test(priority = 1, description = "TC-097: Verify TMM Export Navigation")
+    @Test(priority = 5, description = "Full TMM Details Export Flow - Comprehensive Test")
     public void tc097_verifyTMMExportNavigation() {
         TestReporter.resetStepCounter();
         
@@ -367,11 +366,6 @@ public class TMMDetailsExportTest extends BaseTest {
             softAssert.fail("TC-100 Failed: " + e.getMessage());
         }
     }
-
-    // ═══════════════════════════════════════════════════════════════
-    // COMPREHENSIVE FLOW TEST (Original Full Flow)
-    // ═══════════════════════════════════════════════════════════════
-    @Test(priority = 5, description = "Full TMM Details Export Flow - Comprehensive Test")
     public void TMMDetailsExportFullFlow() {
         TestReporter.resetStepCounter();
         
