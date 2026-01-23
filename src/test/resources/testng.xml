@@ -1,179 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="SEG Titles Automation Suite">
-    <test name="Full Flow">
+<suite name="ABR Titles Automation Suite" parallel="false" verbose="1">
+    
+    <!-- Add TestListener for ExtentReports -->
+    <listeners>
+        <listener class-name="com.abr.titles.listeners.TestListener"/>
+    </listeners>
+    
+    <test name="Full Flow Tests" preserve-order="true">
         <classes>
-            <class name="com.seg.titles.base.LoginTest"/>
-            <class name="com.seg.titles.base.ScrollPageTest"/>
-            <class name="com.seg.titles.base.SortTableTest"/>
-            <class name="com.seg.titles.base.FilterTableTest"/>
-            <class name="com.seg.titles.base.AllCheckboxFiltersTest"/>
-            <class name="com.seg.titles.base.MenuClickTest"/>
-            <class name="com.seg.titles.base.TitleDetailsTest"/>
+            <class name="com.abr.titles.base.LoginTest"/>
+            <class name="com.abr.titles.base.TitleSearchTest"/>
+            <class name="com.abr.titles.base.TitleDetailsTest"/>
+            <class name="com.abr.titles.base.TMMDetailsExportTest"/>
         </classes>
     </test>
+    
 </suite>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
