@@ -1,5 +1,4 @@
 package com.abr.titles.base;
-
 import com.abr.titles.utils.SharedDriver;
 import com.abr.titles.utils.TestReporter;
 import org.openqa.selenium.*;
