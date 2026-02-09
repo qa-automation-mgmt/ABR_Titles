@@ -1,4 +1,5 @@
 package com.abr.titles.base;
+ 
 import com.abr.titles.utils.SharedDriver;
 import com.abr.titles.utils.TestReporter;
 import org.openqa.selenium.*;
@@ -6,37 +7,37 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-
+ 
 import java.time.Duration;
 import java.util.*;
-
+ 
 public class TitleSearchTest extends BaseTest {
-
+ 
     private WebDriverWait wait;
     private WebDriverWait shortWait;
     private Actions actions;
     private Random random;
-
+ 
     @BeforeClass
     public void setup() {
         driver = SharedDriver.getDriver();
-
+ 
         if (driver == null) {
             throw new RuntimeException("❌ Shared driver not initialized. Check BaseTest setup.");
         }
-
+ 
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         shortWait = new WebDriverWait(driver, Duration.ofSeconds(7));
         actions = new Actions(driver);
         random = new Random();
         System.out.println("🔹 Test setup complete - using shared logged-in driver");
     }
-
+ 
     @AfterClass
     public void teardown() {
         System.out.println("✅ Test completed - keeping driver alive for other tests");
     }
-
+ 
     @Test
     public void TitleSearchFilterFlow() {
         TestReporter.resetStepCounter();
@@ -59,7 +60,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Login verification failed", e);
                 softAssert.fail("Not logged in: " + e.getMessage());
             }
-
+ 
             // Navigate to Home
             try {
                 TestReporter.logInfo("Navigating to home page");
@@ -83,7 +84,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to navigate to Title Search", e);
                 softAssert.fail("Title Search navigation failed: " + e.getMessage());
             }
-
+ 
             // Step 2: Sort All Columns
             try {
                 TestReporter.logInfo("Sorting all columns");
@@ -93,7 +94,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to sort columns", e);
                 softAssert.fail("Column sorting failed: " + e.getMessage());
             }
-
+ 
             // Step 3: Scroll Page
             try {
                 TestReporter.logInfo("Scrolling through the data table");
@@ -103,7 +104,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to scroll table", e);
                 softAssert.fail("Table scrolling failed: " + e.getMessage());
             }
-
+ 
             // Step 4: Select ISBNs
             try {
                 TestReporter.logInfo("Selecting ISBNs from dropdown");
@@ -114,7 +115,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to select ISBNs", e);
                 softAssert.fail("ISBN dropdown selection failed: " + e.getMessage());
             }
-
+ 
             // Step 5: Export
             try {
                 TestReporter.logInfo("Clicking Export button (1st time)");
@@ -125,7 +126,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to click Export button", e);
                 softAssert.fail("Export button click failed: " + e.getMessage());
             }
-
+ 
             // Step 6: Clear All Filters
             try {
                 TestReporter.logInfo("Clicking Clear All Filter button");
@@ -135,7 +136,7 @@ public class TitleSearchTest extends BaseTest {
             } catch (Exception e) {
                 TestReporter.logWarning("Clear filter button not found or already cleared");
             }
-
+ 
             // Step 7: Select Authors
             try {
                 TestReporter.logInfo("Selecting Authors from dropdown");
@@ -146,7 +147,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to select Authors", e);
                 softAssert.fail("Author dropdown selection failed: " + e.getMessage());
             }
-
+ 
             // Step 8: Clear All Filters
             try {
                 TestReporter.logInfo("Clicking Clear All Filter button");
@@ -156,7 +157,7 @@ public class TitleSearchTest extends BaseTest {
             } catch (Exception e) {
                 TestReporter.logWarning("Clear filter button not found or already cleared");
             }
-
+ 
             // Steps 9-17: Test Multiple Filter Types
             String[] filterTypes = {
                 "season:Season",
@@ -177,10 +178,10 @@ public class TitleSearchTest extends BaseTest {
                 
                 testFilterWithCheckboxes(filterId, filterName, softAssert);
             }
-
+ 
             TestReporter.logInfo("All filters tested - proceeding to final export");
             Thread.sleep(2000);
-
+ 
             // Step 18: Final Export
             try {
                 TestReporter.logInfo("Clicking Export button (2nd time)");
@@ -195,7 +196,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to click Export button", e);
                 softAssert.fail("Final export failed: " + e.getMessage());
             }
-
+ 
             // Step 19: Navigate Home
             try {
                 TestReporter.logInfo("Navigating back to home page");
@@ -214,7 +215,7 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logFail("Failed to navigate back to home", e);
                 softAssert.fail("Home navigation failed: " + e.getMessage());
             }
-
+ 
             TestReporter.logInfo("========================================");
             TestReporter.logInfo("Title Search Filter Flow Test Completed");
             TestReporter.logInfo("========================================");
@@ -227,7 +228,7 @@ public class TitleSearchTest extends BaseTest {
             softAssert.assertAll();
         }
     }
-
+ 
     private void testFilterWithCheckboxes(String filterId, String filterName, SoftAssert softAssert) {
         try {
             TestReporter.logInfo("Testing " + filterName + " filter");
@@ -287,7 +288,7 @@ public class TitleSearchTest extends BaseTest {
             softAssert.fail(filterName + " filter test failed: " + e.getMessage());
         }
     }
-
+ 
     private void sortAllColumns() throws Exception {
         WebElement table = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table")));
         ((JavascriptExecutor) driver).executeScript(
@@ -374,27 +375,27 @@ public class TitleSearchTest extends BaseTest {
         
         TestReporter.logInfo("Completed sorting all columns");
     }
-
+ 
     private void scrollPage() throws Exception {
         TestReporter.logInfo("Starting vertical scroll (loading all records)");
-
+ 
         WebElement tableContainer = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.cssSelector(".MuiTableContainer-root")
         ));
-
+ 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         int previousCount = 0;
         int sameCountCounter = 0;
         int scrollIteration = 0;
-
+ 
         while (sameCountCounter < 3) {
             scrollIteration++;
             js.executeScript("arguments[0].scrollTop += 1000;", tableContainer);
             Thread.sleep(1500);
-
+ 
             List<WebElement> rows = driver.findElements(By.cssSelector("tbody tr"));
             int currentCount = rows.size();
-
+ 
             if (currentCount > previousCount) {
                 TestReporter.logInfo("Scroll " + scrollIteration + " - Loaded: " + currentCount + " total rows (+" + (currentCount - previousCount) + " new)");
                 previousCount = currentCount;
@@ -404,26 +405,26 @@ public class TitleSearchTest extends BaseTest {
                 TestReporter.logInfo("Scroll " + scrollIteration + " - No new records loaded (" + sameCountCounter + "/3)");
             }
         }
-
+ 
         TestReporter.logInfo("Reached end of table - " + previousCount + " total rows loaded");
-
+ 
         TestReporter.logInfo("Scrolling horizontally to view all columns");
         for (int i = 0; i < 5; i++) {
             js.executeScript("arguments[0].scrollLeft += 400;", tableContainer);
             Thread.sleep(200);
         }
-
+ 
         TestReporter.logInfo("Scrolling back to left");
         js.executeScript("arguments[0].scrollLeft = 0;", tableContainer);
         Thread.sleep(800);
-
+ 
         TestReporter.logInfo("Scrolling back to top");
         js.executeScript("arguments[0].scrollTop = 0;", tableContainer);
         Thread.sleep(1000);
         
         TestReporter.logPass("Completed scrolling - returned to top-left");
     }
-
+ 
     private void clickElementByText(String text) throws Exception {
         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(
             By.xpath("//*[contains(text(),'" + text + "')]")
@@ -769,7 +770,7 @@ public class TitleSearchTest extends BaseTest {
         
         return successCount;
     }
-
+ 
     private void waitForPageLoad() {
         try {
             wait.until(driver1 ->

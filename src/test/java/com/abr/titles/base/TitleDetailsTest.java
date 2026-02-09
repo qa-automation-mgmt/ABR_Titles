@@ -1,14 +1,12 @@
- package com.abr.titles.base;
-  import java.util.Set;
-  
-    import com.abr.titles.utils.SharedDriver;
-    import com.abr.titles.utils.TestReporter;
-    import org.openqa.selenium.*;
-    
-                        import org.openqa.selenium.interactions.Actions;
-                        import org.openqa.selenium.support.ui.*;
-                        import org.testng.annotations.*;
-                        import org.testng.asserts.SoftAssert;
+package com.abr.titles.base;
+import java.util.Set;
+import com.abr.titles.utils.SharedDriver;
+import com.abr.titles.utils.TestReporter;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.*;
+import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 
                 import java.time.Duration;
                 import java.util.List;
