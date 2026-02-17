@@ -52,7 +52,7 @@ public class BaseTest {
     }
 
     protected WebDriver initializeDriver() {
-        WebDriverManager.chromedriver().browserVersion("142").setup();
+        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("--disable-notifications");
